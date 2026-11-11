@@ -1,0 +1,5 @@
+﻿@extends('layouts.layout', ['title' => 'Galeri'])
+@section('content')
+<section class="bg-[#0b1f3a] px-5 py-16 text-white lg:px-8"><div class="mx-auto max-w-7xl"><p class="text-sm font-bold uppercase tracking-widest text-yellow-300">Dokumentasi pekerjaan</p><h1 class="mt-3 text-4xl font-black sm:text-5xl">Galeri Aktivitas Kami</h1></div></section>
+<section class="mx-auto max-w-7xl px-5 py-16 lg:px-8"><div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">@foreach (['Instalasi jalur pipa gas', 'Persiapan tabung industri', 'Reparasi tangki'] as $index => $label)<div class="group overflow-hidden rounded-2xl bg-[#0b1f3a] shadow-sm"><div class="flex h-56 items-center justify-center bg-gradient-to-br from-[#0b1f3a] via-slate-700 to-red-700 text-5xl font-black text-yellow-300 transition group-hover:scale-105">MG</div><div class="p-5"><h2 class="font-bold text-white">{{ $label }}</h2><p class="mt-1 text-sm text-slate-300">Placeholder foto dokumentasi {{ $index + 1 }}</p></div></div>@endforeach</div></section>
+@endsection
