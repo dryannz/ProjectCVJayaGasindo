@@ -7,3 +7,22 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+@layer base {
+    a[href],
+    button,
+    summary,
+    select,
+    label[for],
+    input[type='checkbox'],
+    input[type='radio'] {
+        cursor: pointer;
+    }
+
+    button:disabled,
+    select:disabled,
+    input[type='checkbox']:disabled,
+    input[type='radio']:disabled {
+        cursor: not-allowed;
+    }
+}
