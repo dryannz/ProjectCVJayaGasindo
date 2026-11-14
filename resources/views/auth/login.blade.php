@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Halaman login petugas CV. Mandiri Jaya Gasindo Engineering.">
     <meta name="theme-color" content="#0b1f3a">
-    <title>Login Petugas | MG Jaya Gasindo</title>
+    <title>Login Petugas | CV. Mandiri Jaya Gasindo Engineering</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-[#071a31] font-sans text-slate-900 antialiased">
@@ -15,9 +15,9 @@
         <div class="absolute inset-y-0 left-0 w-2 bg-yellow-400" aria-hidden="true"></div>
         <div class="absolute right-0 top-0 h-28 w-28 bg-red-600/80" aria-hidden="true"></div>
         <div class="relative z-10">
-            <a href="{{ route('home') }}" class="inline-flex min-h-11 items-center gap-3 rounded-xl text-white transition hover:text-yellow-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-yellow-300" aria-label="Kembali ke beranda MG Jaya Gasindo">
-                <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-yellow-400 text-xl font-black text-[#0b1f3a]">MG</span>
-                <span class="text-sm font-extrabold uppercase tracking-[0.16em] sm:text-base">Jaya Gasindo</span>
+            <a href="{{ route('home') }}" class="inline-flex min-h-11 items-center gap-3 rounded-xl text-white transition hover:text-yellow-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-yellow-300" aria-label="Kembali ke beranda CV. Mandiri Jaya Gasindo Engineering">
+                <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-yellow-400 text-xl font-black text-[#0b1f3a]">MJ</span>
+                <span class="text-sm font-extrabold uppercase tracking-[0.16em] sm:text-base">CV. Mandiri Jaya Gasindo</span>
             </a>
         </div>
         <div class="relative z-10 mt-16 max-w-xl lg:mt-0">

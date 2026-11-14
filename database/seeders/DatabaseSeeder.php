@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(PetugasSeeder::class);
+        $this->call(KategoriSeeder::class);
 
         // User::factory(10)->create();
 
