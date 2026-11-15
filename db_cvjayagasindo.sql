@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2026 at 09:47 AM
+-- Generation Time: Nov 14, 2026 at 11:19 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.4.8
 
@@ -43,6 +43,23 @@ CREATE TABLE `barang_jasa` (
   `gambar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `barang_jasa`
+--
+
+INSERT INTO `barang_jasa` (`idbarangjasa`, `nama_barang`, `ukuran`, `unit`, `price`, `created_at`, `updated_at`, `kategori_id`, `tipe`, `deskripsi`, `mode_harga`, `stok`, `gambar`, `is_active`) VALUES
+('BRG-0001', 'Gas Co2', '20 kg', 'Tabung', '2000000', '2026-11-14 03:39:17', '2026-11-14 04:18:55', 1, 'fisik', NULL, 'fix', 2, NULL, 1),
+('BRG-0002', 'Tabung + Isi Gas Oksigen (O2) Industri', '6 m³', 'Tabung', '1350000', '2026-11-14 04:10:43', '2026-11-14 04:10:43', 1, 'fisik', 'Tabung baja baru beserta isi gas oksigen murni untuk kebutuhan pengelasan dan pemotongan logam industri.', 'fix', 25, NULL, 1),
+('BRG-0003', 'Isi Ulang Gas Argon (Ar) Welding', '6 m³', 'Tabung', '450000', '2026-11-14 04:11:50', '2026-11-14 04:11:50', 1, 'fisik', 'Layanan isi ulang (refill) gas Argon kemurnian tinggi khusus pengelasan TIG/MIG.', 'fix', 40, NULL, 1),
+('BRG-0004', 'Isi Ulang Gas Acetylene (C2H2)', '40 liter', 'Tabung', '650000', '2026-11-14 04:12:38', '2026-11-14 04:12:38', 1, 'fisik', 'Pengisian ulang gas asetilena bertekanan untuk aplikasi pemotongan besi dan brazing.', 'fix', 16, NULL, 1),
+('BRG-0005', 'Gas Oksigen Medis (Medical O2)', '6 m³', 'Tabung', '185000', '2026-11-14 04:13:20', '2026-11-14 04:13:20', 2, 'fisik', 'Gas oksigen standar medis bersertifikat untuk kebutuhan rumah sakit, klinik, dan fasilitas kesehatan.', 'fix', 50, NULL, 1),
+('BRG-0006', 'Gas Nitrogen UHP (Ultra High Purity)', '7 m³', 'Tabung', '850000', '2026-11-14 04:14:02', '2026-11-14 04:14:02', 2, 'fisik', 'Gas nitrogen kemurnian tinggi (99.999%) untuk keperluan kalibrasi instrumen dan analisis laboratorium.', 'fix', 15, NULL, 1),
+('BRG-0007', 'Gas Helium (He) Grade Laboratorium', '6 m³', 'Tabung', '3200000', '2026-11-14 04:14:44', '2026-11-14 04:14:44', 2, 'fisik', 'Gas helium khusus untuk alat kromatografi gas (GC) dan penelitian laboratorium.', 'fix', 10, NULL, 1),
+('JSA-0001', 'Jasa Instalasi Pipa Gas Sentral Industri', '1 inch', 'Meter', '450000', '2026-11-14 04:15:35', '2026-11-14 04:15:35', 3, 'jasa', 'Pemasangan jalur perpipaan distribusi gas bertekanan tinggi menggunakan material pipa seamless standar industri.', 'fix', NULL, NULL, 1),
+('JSA-0002', 'Jasa Instalasi Pipa Gas Medis (Tembaga)', '1/2 inch', 'titik', '1250000', '2026-11-14 04:16:16', '2026-11-14 04:16:16', 3, 'jasa', 'Instalasi jaringan pipa tembaga (copper pipe) beserta outlet gas medis untuk ruang perawatan rumah sakit.', 'fix', NULL, NULL, 1),
+('JSA-0003', 'Jasa Hydrotest & Re-sertifikasi Tabung Gas', '40 liter', 'Tabung', '275000', '2026-11-14 04:16:55', '2026-11-14 04:16:55', 4, 'jasa', 'Pengujian tekanan hidrostatik, pembersihan internal, pengecatan ulang, dan penerbitan sertifikat kelayakan tabung.', 'fix', NULL, NULL, 1),
+('JSA-0004', 'Jasa Perawatan & Reparasi Tangki Penyimpanan', 'Kapasitas 5 Ton', 'Unit', '4500000', '2026-11-14 04:17:31', '2026-11-14 04:17:31', 4, 'jasa', 'Inspeksi berkala, perbaikan kebocoran valve/pipa, dan kalibrasi pressure gauge pada tangki penyimpanan gas.', 'fix', NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -220,6 +237,16 @@ CREATE TABLE `kategori` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `kategori`
+--
+
+INSERT INTO `kategori` (`id`, `nama`, `slug`, `urutan`, `created_at`, `updated_at`) VALUES
+(1, 'Gas Industri', 'gas-industri', 0, '2026-11-14 03:37:33', '2026-11-14 04:03:57'),
+(2, 'Gas Media', 'gas-media', 0, '2026-11-14 04:03:50', '2026-11-14 04:03:50'),
+(3, 'Jasa Instalasi', 'jasa-instalasi', 0, '2026-11-14 04:04:09', '2026-11-14 04:04:09'),
+(4, 'Jasa Reparasi dan Perawatan', 'jasa-reparasi-dan-perawatan', 0, '2026-11-14 04:04:22', '2026-11-14 04:04:22');
+
 -- --------------------------------------------------------
 
 --
@@ -240,7 +267,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '0001_01_01_000000_create_users_table', 1),
 (2, '0001_01_01_000001_create_cache_table', 1),
 (3, '0001_01_01_000002_create_jobs_table', 1),
-(4, '2026_11_14_085556_create_petugas_table', 1);
+(4, '2026_11_14_085556_create_petugas_table', 1),
+(5, '2026_11_14_094340_create_kategoris_table', 2),
+(6, '2026_11_14_094341_create_customers_table', 2),
+(7, '2026_11_14_094342_create_barang_jasas_table', 2),
+(8, '2026_11_14_094343_create_harga_khususes_table', 2);
 
 -- --------------------------------------------------------
 
@@ -278,9 +309,9 @@ CREATE TABLE `petugas` (
 --
 
 INSERT INTO `petugas` (`idpetugas`, `namapetugas`, `notelp`, `email`, `password`, `role`, `remember_token`, `created_at`, `updated_at`, `is_active`) VALUES
-('PTG001', 'Admin Sales MJG', '081200000001', 'admin.sales@jayagasindo.test', '$2y$12$FEkxI0IPpadVnCDVSkNU3OFOEldKxPMlvCud82gUSqcP5okrAnu.G', 'admin_sales', NULL, '2026-11-14 02:22:15', '2026-11-14 02:22:15', 1),
-('PTG002', 'Teknisi MJG', '081200000002', 'teknisi@jayagasindo.test', '$2y$12$V3Mj2YeNitRPszUgefS7r.Hk7w9vb6XcjMpAL/Et2.Rc7WOQFmAxS', 'teknisi', 'l3bpE4EE95TmHTA6RXN8zPm8rPrNb6mXOKnM9Rchdcr2RViiLZov51K3ZR1C', '2026-11-14 02:22:16', '2026-11-14 02:22:16', 1),
-('PTG003', 'Pimpinan MJG', '081200000003', 'pimpinan@jayagasindo.test', '$2y$12$IUx8GBRGBRe5ZNsWj4laj.MfgIX3D2OvRwm.Swu4D./GAoGdtEPPm', 'pimpinan', NULL, '2026-11-14 02:22:16', '2026-11-14 02:22:16', 1);
+('PTG001', 'Admin Sales MJGE', '081200000001', 'admin.sales@jayagasindo.test', '$2y$12$FEkxI0IPpadVnCDVSkNU3OFOEldKxPMlvCud82gUSqcP5okrAnu.G', 'admin_sales', NULL, '2026-11-14 02:22:15', '2026-11-14 02:22:15', 1),
+('PTG002', 'Teknisi MJGE', '081200000002', 'teknisi@jayagasindo.test', '$2y$12$V3Mj2YeNitRPszUgefS7r.Hk7w9vb6XcjMpAL/Et2.Rc7WOQFmAxS', 'teknisi', 'DT9JxjpSfoQiVaowYPop3qsdwjbqAUvWZDvHiEeqVKGGhtYK2wObodv5UlYk', '2026-11-14 02:22:16', '2026-11-14 02:22:16', 1),
+('PTG003', 'Pimpinan MJGE', '081200000003', 'pimpinan@jayagasindo.test', '$2y$12$IUx8GBRGBRe5ZNsWj4laj.MfgIX3D2OvRwm.Swu4D./GAoGdtEPPm', 'pimpinan', NULL, '2026-11-14 02:22:16', '2026-11-14 02:22:16', 1);
 
 -- --------------------------------------------------------
 
@@ -509,13 +540,13 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `kategori`
 --
 ALTER TABLE `kategori`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `users`
