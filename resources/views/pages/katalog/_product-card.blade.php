@@ -54,5 +54,10 @@
                 @endif
             </div>
         </div>
+
+        <form method="POST" action="{{ route('rfq.add', ['barangJasa' => $produk]) }}">
+            @csrf
+            <button type="submit" class="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-yellow-400 px-4 text-sm font-black text-[#0b1f3a] transition hover:bg-yellow-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400">Tambah ke keranjang RFQ</button>
+        </form>
     </div>
 </article>

@@ -8,8 +8,6 @@
         $productImage = $barangJasa->gambar
             ? \Illuminate\Support\Facades\Storage::disk('public')->url($barangJasa->gambar)
             : null;
-        $offerUrl = $barangJasa->tautan_penawaran;
-        $isWhatsAppOffer = \Illuminate\Support\Str::startsWith($offerUrl, 'https://wa.me/');
     @endphp
 
     <section class="bg-[#0b1f3a] text-white">
@@ -80,12 +78,21 @@
                     @endif
                 </dl>
 
-                <div class="mt-6 flex flex-col gap-3 sm:flex-row">
-                    <a href="{{ $offerUrl }}" @if ($isWhatsAppOffer) target="_blank" rel="noopener noreferrer" @endif class="inline-flex min-h-12 flex-1 items-center justify-center rounded-xl bg-yellow-400 px-5 text-center text-sm font-black text-[#0b1f3a] transition hover:bg-yellow-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400">
-                        {{ $isWhatsAppOffer ? 'Minta penawaran via WhatsApp' : 'Hubungi kami' }}
-                    </a>
-                    <a href="{{ route('katalog.index') }}" class="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#0b1f3a] px-5 text-center text-sm font-bold text-[#0b1f3a] transition hover:bg-[#0b1f3a] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0b1f3a]">Kembali ke katalog</a>
-                </div>
+                <form method="POST" action="{{ route('rfq.add', ['barangJasa' => $barangJasa]) }}" class="mt-6 rounded-2xl border border-slate-200 bg-white p-5">
+                    @csrf
+                    <div class="flex flex-wrap items-end gap-4">
+                        <div class="w-28">
+                            <label for="rfq-qty" class="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">Jumlah{{ $barangJasa->unit && $barangJasa->unit !== '-' ? ' ('.$barangJasa->unit.')' : '' }}</label>
+                            <input id="rfq-qty" name="qty" type="number" inputmode="numeric" min="1" max="9999" value="{{ old('qty', 1) }}" class="mt-2 block min-h-12 w-full rounded-lg border border-slate-300 px-3 text-base font-bold outline-none focus:border-[#0b1f3a] focus:ring-2 focus:ring-yellow-300">
+                            @error('qty')<p class="mt-1 text-xs font-semibold text-red-700">{{ $message }}</p>@enderror
+                        </div>
+                        <button type="submit" class="inline-flex min-h-12 flex-1 items-center justify-center rounded-xl bg-yellow-400 px-5 text-center text-sm font-black text-[#0b1f3a] transition hover:bg-yellow-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400">Tambah ke keranjang RFQ</button>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-3 text-sm font-bold">
+                        <button type="submit" name="lanjut" value="rfq" class="inline-flex min-h-11 items-center rounded-lg text-red-700 underline decoration-red-300 decoration-2 underline-offset-4 hover:text-red-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">Ajukan penawaran sekarang</button>
+                        <a href="{{ route('katalog.index') }}" class="inline-flex min-h-11 items-center rounded-lg text-[#0b1f3a] underline decoration-slate-300 decoration-2 underline-offset-4 hover:text-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0b1f3a]">Kembali ke katalog</a>
+                    </div>
+                </form>
             </div>
         </div>
 

@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\Admin\BarangJasaController;
 use App\Http\Controllers\Admin\KategoriController;
+use App\Http\Controllers\Admin\LeadController;
 use App\Http\Controllers\KatalogController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\RfqController;
 use App\Http\Controllers\StaffDashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +26,15 @@ Route::controller(KatalogController::class)->group(function (): void {
     Route::get('/sitemap.xml', 'sitemap')->name('sitemap');
 });
 
+Route::controller(RfqController::class)->prefix('rfq')->name('rfq.')->group(function (): void {
+    Route::get('/', 'index')->name('index');
+    Route::post('/', 'store')->middleware('throttle:8,1')->name('store');
+    Route::get('/terkirim', 'terkirim')->name('terkirim');
+    Route::post('/item/{barangJasa}', 'add')->name('add');
+    Route::patch('/item/{barangJasa}', 'update')->name('update');
+    Route::delete('/item/{barangJasa}', 'remove')->name('remove');
+});
+
 Route::controller(LoginController::class)->group(function (): void {
     Route::get('/login', 'create')->name('login');
     Route::post('/login', 'login')->name('login.attempt');
@@ -32,6 +43,10 @@ Route::controller(LoginController::class)->group(function (): void {
 
 Route::middleware(['auth', 'role:admin_sales'])->prefix('admin')->name('admin.')->group(function (): void {
     Route::get('/dashboard', [StaffDashboardController::class, 'admin'])->name('dashboard');
+
+    Route::get('/leads', [LeadController::class, 'index'])->name('leads.index');
+    Route::get('/leads/{lead}', [LeadController::class, 'show'])->name('leads.show');
+    Route::patch('/leads/{lead}', [LeadController::class, 'update'])->name('leads.update');
 
     Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
     Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');

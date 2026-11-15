@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BarangJasa;
 use App\Models\Kategori;
+use App\Models\Lead;
 use App\Models\Petugas;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -23,6 +24,8 @@ class StaffDashboardController extends Controller
                 ->whereNotNull('stok')
                 ->where('stok', '<=', config('inventory.low_stock_threshold', 5))
                 ->count(),
+            'leadBaruCount' => Lead::query()->baru()->count(),
+            'leadTotalCount' => Lead::query()->count(),
             'petugas' => $petugas,
         ]);
     }

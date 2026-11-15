@@ -1,14 +1,52 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
+
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ $description ?? 'CV. Mandiri Jaya Gasindo Engineering adalah general supplier dan mitra instalasi gas industri serta media terpercaya.' }}"><meta name="theme-color" content="#0b1f3a">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ $description ?? 'CV. Mandiri Jaya Gasindo Engineering adalah general supplier dan mitra instalasi gas industri serta media terpercaya.' }}">
+    <meta name="theme-color" content="#0b1f3a">
     <title>{{ $title ?? 'Company Profile' }} | CV. Mandiri Jaya Gasindo Engineering</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body class="bg-slate-50 font-sans text-slate-800 antialiased">
-<a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-yellow-400 focus:px-4 focus:py-2 focus:font-bold">Lewati ke konten utama</a>
-<header class="sticky top-0 z-50 border-b border-white/10 bg-[#0b1f3a] text-white shadow-lg"><div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-4 lg:px-8"><a href="{{ route('home') }}" class="flex shrink-0 items-center gap-3" aria-label="CV. Mandiri Jaya Gasindo Engineering - Beranda"><span class="flex h-11 w-11 items-center justify-center rounded-xl bg-yellow-400 text-xl font-black text-[#0b1f3a]">MJ</span><span class="text-sm font-extrabold uppercase tracking-[0.16em] sm:text-base">CV. Mandiri Jaya Gasindo Engineering</span></a><nav class="order-3 flex w-full items-center justify-between gap-1 overflow-x-auto text-xs font-semibold sm:order-none sm:w-auto sm:gap-2 sm:text-sm" aria-label="Navigasi utama">@foreach ([['home', 'Beranda', 'home'], ['about', 'Tentang Kami', 'about'], ['services', 'Layanan', 'services'], ['katalog.index', 'Katalog', 'katalog.*'], ['gallery', 'Galeri', 'gallery'], ['contact', 'Kontak', 'contact']] as [$route, $label, $match])<a href="{{ route($route) }}" class="whitespace-nowrap rounded-lg px-2 py-2 transition hover:bg-white/10 hover:text-yellow-300 sm:px-3 {{ request()->routeIs($match) ? 'bg-white/10 text-yellow-300' : 'text-slate-100' }}">{{ $label }}</a>@endforeach</nav><a href="{{ route('contact') }}" class="hidden rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white transition hover:bg-red-500 sm:inline-flex">Konsultasi</a></div></header>
-<main id="main-content">@yield('content')</main>
-<footer class="bg-[#0b1f3a] text-white"><div class="mx-auto grid max-w-7xl gap-8 px-5 py-12 sm:grid-cols-2 lg:grid-cols-3 lg:px-8"><div><div class="mb-4 flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-lg bg-yellow-400 font-black text-[#0b1f3a]">MJ</span><span class="font-bold">CV. Mandiri Jaya Gasindo Engineering</span></div><p class="max-w-sm text-sm leading-6 text-slate-300">Mitra terpercaya untuk kebutuhan gas industri, media, instalasi, dan perawatan tangki.</p></div><div><h2 class="mb-4 text-base font-bold">Navigasi</h2><div class="grid gap-2 text-sm text-slate-300"><a class="hover:text-yellow-300" href="{{ route('about') }}">Tentang Kami</a><a class="hover:text-yellow-300" href="{{ route('services') }}">Layanan</a><a class="hover:text-yellow-300" href="{{ route('katalog.index') }}">Katalog</a><a class="hover:text-yellow-300" href="{{ route('gallery') }}">Galeri</a><a class="hover:text-yellow-300" href="{{ route('contact') }}">Hubungi Kami</a></div></div><div><h2 class="mb-4 text-base font-bold">Hubungi Kami</h2><p class="text-sm leading-6 text-slate-300">Senin–Sabtu, 08.00–17.00 WIB<br>Telepon: +62 812-0000-0000<br>Email: info@jayagasindo.com</p></div></div><div class="border-t border-white/10 px-5 py-5 text-center text-xs text-slate-400">© {{ date('Y') }} CV. Mandiri Jaya Gasindo Engineering. Semua hak dilindungi.</div></footer>
-</body></html>
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-yellow-400 focus:px-4 focus:py-2 focus:font-bold">Lewati ke konten utama</a>
+    <header class="sticky top-0 z-50 border-b border-white/10 bg-[#0b1f3a] text-white shadow-lg">
+        <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-4 lg:px-8"><a href="{{ route('home') }}" class="flex shrink-0 items-center gap-3" aria-label="CV. Mandiri Jaya Gasindo Engineering - Beranda"><span class="flex h-11 w-11 items-center justify-center rounded-xl bg-yellow-400 text-xl font-black text-[#0b1f3a]">MJ</span><span class="text-sm font-extrabold uppercase tracking-[0.16em] sm:text-base">CV. Mandiri Jaya Gasindo Engineering</span></a>
+            <nav class="order-3 flex w-full items-center justify-between gap-1 overflow-x-auto text-xs font-semibold sm:order-none sm:w-auto sm:gap-2 sm:text-sm" aria-label="Navigasi utama">@foreach ([['home', 'Beranda', 'home'], ['about', 'Tentang Kami', 'about'], ['services', 'Layanan', 'services'], ['katalog.index', 'Katalog', 'katalog.*'], ['gallery', 'Galeri', 'gallery'], ['contact', 'Kontak', 'contact']] as [$route, $label, $match])<a href="{{ route($route) }}" class="whitespace-nowrap rounded-lg px-2 py-2 transition hover:bg-white/10 hover:text-yellow-300 sm:px-3 {{ request()->routeIs($match) ? 'bg-white/10 text-yellow-300' : 'text-slate-100' }}">{{ $label }}</a>@endforeach</nav>
+            <a href="{{ route('rfq.index') }}" class="relative inline-flex min-h-11 items-center gap-2 rounded-lg border border-yellow-400/60 px-3 py-2 text-sm font-bold text-yellow-300 transition hover:bg-yellow-400 hover:text-[#0b1f3a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-300 {{ request()->routeIs('rfq.*') ? 'bg-yellow-400 text-[#0b1f3a]' : '' }}" aria-label="Keranjang RFQ, {{ $rfqCount }} item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true">
+                    <circle cx="9" cy="20" r="1.5" />
+                    <circle cx="18" cy="20" r="1.5" />
+                    <path d="M2 3h3l2.6 12.2a1 1 0 0 0 1 .8h9.3a1 1 0 0 0 1-.8L21 7H6" />
+                </svg>
+                <span class="hidden xl:inline">Keranjang RFQ</span>
+                <span class="inline-flex min-w-6 items-center justify-center rounded-full bg-red-600 px-1.5 py-0.5 text-xs font-black text-white" data-rfq-count>{{ $rfqCount }}</span>
+            </a>
+        </div>
+    </header>
+    @if (session('rfq_added'))<div class="border-b border-emerald-200 bg-emerald-50" role="status">
+        <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-5 py-3 text-sm font-semibold text-emerald-900 lg:px-8"><span>{{ session('rfq_added') }}</span><a href="{{ route('rfq.index') }}" class="inline-flex min-h-10 items-center rounded-lg bg-emerald-700 px-4 font-bold text-white hover:bg-emerald-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700">Lihat keranjang</a></div>
+    </div>@endif
+    <main id="main-content">@yield('content')</main>
+    <footer class="bg-[#0b1f3a] text-white">
+        <div class="mx-auto grid max-w-7xl gap-8 px-5 py-12 sm:grid-cols-2 lg:grid-cols-3 lg:px-8">
+            <div>
+                <div class="mb-4 flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-lg bg-yellow-400 font-black text-[#0b1f3a]">MJ</span><span class="font-bold">CV. Mandiri Jaya Gasindo Engineering</span></div>
+                <p class="max-w-sm text-sm leading-6 text-slate-300">Mitra terpercaya untuk kebutuhan gas industri, media, instalasi, dan perawatan tangki.</p>
+            </div>
+            <div>
+                <h2 class="mb-4 text-base font-bold">Navigasi</h2>
+                <div class="grid gap-2 text-sm text-slate-300"><a class="hover:text-yellow-300" href="{{ route('about') }}">Tentang Kami</a><a class="hover:text-yellow-300" href="{{ route('services') }}">Layanan</a><a class="hover:text-yellow-300" href="{{ route('katalog.index') }}">Katalog</a><a class="hover:text-yellow-300" href="{{ route('gallery') }}">Galeri</a><a class="hover:text-yellow-300" href="{{ route('contact') }}">Hubungi Kami</a></div>
+            </div>
+            <div>
+                <h2 class="mb-4 text-base font-bold">Hubungi Kami</h2>
+                <p class="text-sm leading-6 text-slate-300">Senin–Sabtu, 08.00–17.00 WIB<br>Telepon: +62 812-0000-0000<br>Email: info@jayagasindo.com</p>
+            </div>
+        </div>
+        <div class="border-t border-white/10 px-5 py-5 text-center text-xs text-slate-400">© {{ date('Y') }} CV. Mandiri Jaya Gasindo Engineering. Semua hak dilindungi.</div>
+    </footer>
+</body>
+
+</html>

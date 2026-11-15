@@ -2,6 +2,7 @@
     $petugas = $petugas ?? auth()->user();
     $navItems = [
         ['label' => 'Dashboard', 'route' => 'admin.dashboard', 'match' => 'admin.dashboard'],
+        ['label' => 'Lead Log', 'route' => 'admin.leads.index', 'match' => 'admin.leads.*', 'badge' => $leadBaruCount ?? 0],
         ['label' => 'Kategori', 'route' => 'admin.kategori.index', 'match' => 'admin.kategori.*'],
         ['label' => 'Produk', 'route' => 'admin.produk.index', 'match' => 'admin.produk.*'],
     ];
@@ -49,7 +50,10 @@
                                 'border-[#0b1f3a] bg-[#0b1f3a]' => $isActive,
                                 'border-slate-500 group-hover:border-yellow-300' => ! $isActive,
                             ]) aria-hidden="true"></span>
-                            {{ $item['label'] }}
+                            <span class="flex-1">{{ $item['label'] }}</span>
+                            @if (($item['badge'] ?? 0) > 0)
+                                <span class="inline-flex min-w-6 items-center justify-center rounded-full bg-red-600 px-1.5 py-0.5 text-xs font-black text-white" aria-label="{{ $item['badge'] }} baru">{{ $item['badge'] }}</span>
+                            @endif
                         </a>
                     @endforeach
                 </nav>
@@ -57,7 +61,7 @@
 
             <div class="border-t border-white/10 px-5 py-5 text-xs leading-5 text-slate-400">
                 <p class="font-bold text-slate-200">CV. Mandiri Jaya Gasindo Engineering</p>
-                <p class="mt-1">Kelola katalog sebelum transaksi dibangun.</p>
+                <p class="mt-1">Kelola katalog dan tindak lanjuti permintaan penawaran.</p>
             </div>
         </aside>
 
