@@ -31,4 +31,9 @@ class Kategori extends Model
     {
         return $this->hasMany(BarangJasa::class, 'kategori_id');
     }
+
+    public function barangJasaAktif(): HasMany
+    {
+        return $this->hasMany(BarangJasa::class, 'kategori_id')->where('is_active', true);
+    }
 }

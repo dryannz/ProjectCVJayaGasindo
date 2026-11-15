@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\BarangJasaController;
 use App\Http\Controllers\Admin\KategoriController;
+use App\Http\Controllers\KatalogController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\StaffDashboardController;
@@ -14,6 +15,13 @@ Route::controller(PageController::class)->group(function (): void {
     Route::get('/galeri', 'gallery')->name('gallery');
     Route::get('/kontak', 'contact')->name('contact');
     Route::post('/kontak', 'submitContact')->name('contact.submit');
+});
+
+Route::controller(KatalogController::class)->group(function (): void {
+    Route::get('/katalog', 'index')->name('katalog.index');
+    Route::get('/katalog/produk/{barangJasa}', 'show')->name('katalog.produk');
+    Route::get('/katalog/{kategori:slug}', 'kategori')->name('katalog.kategori');
+    Route::get('/sitemap.xml', 'sitemap')->name('sitemap');
 });
 
 Route::controller(LoginController::class)->group(function (): void {

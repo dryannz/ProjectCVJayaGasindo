@@ -32,4 +32,66 @@ class BarangJasaFactory extends Factory
             'is_active' => true,
         ];
     }
+
+    public function fisik(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'tipe' => 'fisik',
+            'stok' => $attributes['stok'] ?? 10,
+        ]);
+    }
+
+    public function jasa(): static
+    {
+        return $this->state(fn (): array => [
+            'tipe' => 'jasa',
+            'stok' => null,
+        ]);
+    }
+
+    public function fix(?float $price = 150000): static
+    {
+        return $this->state(fn (): array => [
+            'mode_harga' => 'fix',
+            'price' => $price,
+        ]);
+    }
+
+    public function rfq(): static
+    {
+        return $this->state(fn (): array => [
+            'mode_harga' => 'rfq',
+            'price' => null,
+        ]);
+    }
+
+    public function khusus(?float $price = 200000): static
+    {
+        return $this->state(fn (): array => [
+            'mode_harga' => 'khusus',
+            'price' => $price,
+        ]);
+    }
+
+    public function aktif(): static
+    {
+        return $this->state(fn (): array => [
+            'is_active' => true,
+        ]);
+    }
+
+    public function nonaktif(): static
+    {
+        return $this->state(fn (): array => [
+            'is_active' => false,
+        ]);
+    }
+
+    public function habis(): static
+    {
+        return $this->state(fn (): array => [
+            'tipe' => 'fisik',
+            'stok' => 0,
+        ]);
+    }
 }

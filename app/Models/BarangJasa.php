@@ -65,4 +65,65 @@ class BarangJasa extends Model
     {
         return 'idbarangjasa';
     }
+
+    public function getHargaTampilAttribute(): ?string
+    {
+        if ($this->mode_harga !== 'fix' || $this->price === null) {
+            return null;
+        }
+
+        $formattedPrice = 'Rp '.number_format((float) $this->price, 0, ',', '.');
+
+        return $this->unit && $this->unit !== '-' ? "{$formattedPrice} / {$this->unit}" : $formattedPrice;
+    }
+
+    public function getLabelHargaAttribute(): string
+    {
+        return match ($this->mode_harga) {
+            'fix' => $this->harga_tampil ?? 'Hubungi Kami',
+            'rfq' => 'Harga sesuai permintaan',
+            'khusus' => 'Harga khusus untuk customer terdaftar',
+            default => 'Hubungi Kami',
+        };
+    }
+
+    public function getLabelKetersediaanAttribute(): ?string
+    {
+        if ($this->tipe === 'jasa') {
+            return null;
+        }
+
+        return ($this->stok ?? 0) > 0 ? 'Tersedia' : 'Stok habis';
+    }
+
+    public function isTersedia(): bool
+    {
+        if ($this->tipe === 'jasa') {
+            return true;
+        }
+
+        return ($this->stok ?? 0) > 0;
+    }
+
+    public function getTautanPenawaranAttribute(): string
+    {
+        $whatsapp = preg_replace('/[^0-9]/', '', (string) config('perusahaan.whatsapp'));
+
+        if ($whatsapp === '') {
+            return route('contact');
+        }
+
+        if (str_starts_with($whatsapp, '0')) {
+            $whatsapp = '62'.substr($whatsapp, 1);
+        }
+
+        $message = urlencode(sprintf(
+            'Halo %s, saya ingin meminta penawaran untuk %s (Kode: %s).',
+            config('perusahaan.nama'),
+            $this->nama_barang,
+            $this->idbarangjasa,
+        ));
+
+        return "https://wa.me/{$whatsapp}?text={$message}";
+    }
 }
