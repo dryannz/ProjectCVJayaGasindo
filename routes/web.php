@@ -7,11 +7,13 @@ use App\Http\Controllers\Admin\LeadController;
 use App\Http\Controllers\Admin\PoController;
 use App\Http\Controllers\Admin\QuotationController;
 use App\Http\Controllers\Admin\StokController;
+use App\Http\Controllers\Admin\WorkOrderController;
 use App\Http\Controllers\KatalogController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\RfqController;
 use App\Http\Controllers\StaffDashboardController;
+use App\Http\Controllers\TechnicianWorkOrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(PageController::class)->group(function (): void {
@@ -90,14 +92,38 @@ Route::middleware(['auth', 'role:admin_sales'])->prefix('admin')->name('admin.')
     Route::put('/po/{po}', [PoController::class, 'update'])->name('po.update')->where('po', '.*');
     Route::get('/po/{po}', [PoController::class, 'show'])->name('po.show')->where('po', '.*');
 
+    Route::get('/work-order', [WorkOrderController::class, 'index'])->name('work-order.index');
+    Route::get('/work-order/create/{po}', [WorkOrderController::class, 'create'])->name('work-order.create')->where('po', '.*');
+    Route::post('/work-order/{po}', [WorkOrderController::class, 'store'])->name('work-order.store')->where('po', '.*');
+    Route::get('/work-order/{workOrder}/edit', [WorkOrderController::class, 'edit'])->name('work-order.edit')->where('workOrder', '.*');
+    Route::put('/work-order/{workOrder}', [WorkOrderController::class, 'update'])->name('work-order.update')->where('workOrder', '.*');
+    Route::patch('/work-order/{workOrder}/assign', [WorkOrderController::class, 'assign'])->name('work-order.assign')->where('workOrder', '.*');
+    Route::patch('/work-order/{workOrder}/cancel', [WorkOrderController::class, 'cancel'])->name('work-order.cancel')->where('workOrder', '.*');
+    Route::patch('/work-order/{workOrder}/catatan-admin', [WorkOrderController::class, 'updateAdminNotes'])->name('work-order.admin-notes')->where('workOrder', '.*');
+    Route::get('/work-order/{workOrder}', [WorkOrderController::class, 'show'])->name('work-order.show')->where('workOrder', '.*');
+
     Route::get('/stok', [StokController::class, 'index'])->name('stok.index');
     Route::post('/stok/penyesuaian', [StokController::class, 'adjust'])->name('stok.adjust');
 });
 
-Route::controller(StaffDashboardController::class)->middleware('auth')->group(function (): void {
-    Route::get('/teknisi/work-order', 'workOrder')
-        ->middleware('role:teknisi')
+Route::middleware(['auth', 'role:teknisi'])->group(function (): void {
+    Route::get('/teknisi/work-order', [TechnicianWorkOrderController::class, 'index'])
         ->name('teknisi.work-order');
+    Route::patch('/teknisi/work-order/{workOrder}/mulai', [TechnicianWorkOrderController::class, 'start'])
+        ->name('teknisi.work-order.start')
+        ->where('workOrder', '.*');
+    Route::patch('/teknisi/work-order/{workOrder}/catatan', [TechnicianWorkOrderController::class, 'notes'])
+        ->name('teknisi.work-order.notes')
+        ->where('workOrder', '.*');
+    Route::patch('/teknisi/work-order/{workOrder}/selesai', [TechnicianWorkOrderController::class, 'complete'])
+        ->name('teknisi.work-order.complete')
+        ->where('workOrder', '.*');
+    Route::get('/teknisi/work-order/{workOrder}', [TechnicianWorkOrderController::class, 'show'])
+        ->name('teknisi.work-order.show')
+        ->where('workOrder', '.*');
+});
+
+Route::controller(StaffDashboardController::class)->middleware('auth')->group(function (): void {
     Route::get('/pimpinan/dashboard', 'pimpinan')
         ->middleware('role:pimpinan')
         ->name('pimpinan.dashboard');

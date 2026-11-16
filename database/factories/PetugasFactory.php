@@ -19,6 +19,21 @@ class PetugasFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'password' => 'password',
             'role' => 'admin_sales',
+            'is_active' => true,
         ];
+    }
+
+    public function teknisi(): static
+    {
+        return $this->state(fn (): array => [
+            'role' => 'teknisi',
+        ]);
+    }
+
+    public function nonaktif(): static
+    {
+        return $this->state(fn (): array => [
+            'is_active' => false,
+        ]);
     }
 }

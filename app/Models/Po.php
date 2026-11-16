@@ -93,6 +93,16 @@ class Po extends Model
             ->where('referensi_tipe', 'po');
     }
 
+    public function workOrders(): HasMany
+    {
+        return $this->hasMany(WorkOrder::class, 'pono', 'pono');
+    }
+
+    public function canCreateWorkOrder(): bool
+    {
+        return in_array($this->status, [self::STATUS_DIPROSES, self::STATUS_SELESAI], true);
+    }
+
     public function isEditable(): bool
     {
         return $this->status === self::STATUS_DRAFT;

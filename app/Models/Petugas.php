@@ -26,6 +26,7 @@ class Petugas extends Authenticatable
         'email',
         'password',
         'role',
+        'is_active',
     ];
 
     protected $hidden = [
@@ -37,6 +38,7 @@ class Petugas extends Authenticatable
     {
         return [
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
     }
 
@@ -48,5 +50,10 @@ class Petugas extends Authenticatable
     public function stokMutasi(): HasMany
     {
         return $this->hasMany(StokMutasi::class, 'idpetugas', 'idpetugas');
+    }
+
+    public function workOrders(): HasMany
+    {
+        return $this->hasMany(WorkOrder::class, 'idpetugas', 'idpetugas');
     }
 }

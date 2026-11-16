@@ -31,6 +31,7 @@
                         <tr>
                             <th class="px-5 py-4 font-bold">ID</th>
                             <th class="px-5 py-4 font-bold">Nama perusahaan</th>
+                            <th class="px-5 py-4 font-bold">Kode singkat</th>
                             <th class="px-5 py-4 font-bold">Telepon</th>
                             <th class="px-5 py-4 font-bold">PIC</th>
                             <th class="px-5 py-4 text-right font-bold">Aksi</th>
@@ -41,6 +42,7 @@
                             <tr class="hover:bg-slate-50">
                                 <td class="px-5 py-4 font-mono text-xs font-bold text-[#0b1f3a]">{{ $customer->idcust }}</td>
                                 <td class="px-5 py-4 font-bold text-[#0b1f3a]">{{ $customer->nama_pt }}</td>
+                                <td class="px-5 py-4 font-mono text-xs font-bold text-slate-700">{{ $customer->kode_singkat ?: 'Belum diisi' }}</td>
                                 <td class="px-5 py-4 text-slate-600">{{ $customer->notelp_pt }}</td>
                                 <td class="px-5 py-4 text-slate-600">{{ $customer->pic ?? '-' }}</td>
                                 <td class="px-5 py-4">
@@ -55,7 +57,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr><td colspan="5" class="px-5 py-14 text-center text-sm text-slate-500">Belum ada customer. Tambahkan customer pertama untuk mulai membuat quotation.</td></tr>
+                            <tr><td colspan="6" class="px-5 py-14 text-center text-sm text-slate-500">Belum ada customer. Tambahkan customer pertama untuk mulai membuat quotation.</td></tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -70,6 +72,7 @@
                             <p class="mt-1 text-xs font-mono text-slate-500">{{ $customer->idcust }}</p>
                         </div>
                         <dl class="grid grid-cols-2 gap-3 text-sm">
+                            <div><dt class="text-slate-500">Kode singkat</dt><dd class="mt-1 font-mono font-semibold text-slate-800">{{ $customer->kode_singkat ?: 'Belum diisi' }}</dd></div>
                             <div><dt class="text-slate-500">Telepon</dt><dd class="mt-1 font-semibold text-slate-800">{{ $customer->notelp_pt }}</dd></div>
                             <div><dt class="text-slate-500">PIC</dt><dd class="mt-1 font-semibold text-slate-800">{{ $customer->pic ?? '-' }}</dd></div>
                             <div class="col-span-2"><dt class="text-slate-500">Alamat</dt><dd class="mt-1 font-semibold text-slate-800">{{ $customer->alamat_pt }}</dd></div>

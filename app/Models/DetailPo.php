@@ -6,6 +6,7 @@ use Database\Factories\DetailPoFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DetailPo extends Model
 {
@@ -41,5 +42,10 @@ class DetailPo extends Model
     public function barangJasa(): BelongsTo
     {
         return $this->belongsTo(BarangJasa::class, 'idbarangjasa', 'idbarangjasa');
+    }
+
+    public function workOrderDetails(): HasMany
+    {
+        return $this->hasMany(DetailWorkOrder::class, 'detail_po_id');
     }
 }

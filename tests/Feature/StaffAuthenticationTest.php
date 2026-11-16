@@ -90,6 +90,47 @@ class StaffAuthenticationTest extends TestCase
             ->assertForbidden();
     }
 
+    public function test_teknisi_cannot_open_admin_sales_modules(): void
+    {
+        $petugas = Petugas::factory()->teknisi()->create();
+        $adminRoutes = [
+            'admin.dashboard',
+            'admin.leads.index',
+            'admin.customer.index',
+            'admin.quotation.index',
+            'admin.po.index',
+            'admin.work-order.index',
+            'admin.stok.index',
+            'admin.kategori.index',
+            'admin.produk.index',
+        ];
+
+        foreach ($adminRoutes as $routeName) {
+            $this->actingAs($petugas)
+                ->get(route($routeName))
+                ->assertForbidden();
+        }
+    }
+
+    public function test_pimpinan_can_open_own_dashboard_but_not_work_order(): void
+    {
+        $petugas = Petugas::factory()->create([
+            'role' => 'pimpinan',
+        ]);
+
+        $this->actingAs($petugas)
+            ->get(route('pimpinan.dashboard'))
+            ->assertOk();
+
+        $this->actingAs($petugas)
+            ->get(route('admin.work-order.index'))
+            ->assertForbidden();
+
+        $this->actingAs($petugas)
+            ->get(route('teknisi.work-order'))
+            ->assertForbidden();
+    }
+
     public function test_logout_invalidates_the_session_and_returns_to_login(): void
     {
         $petugas = Petugas::factory()->create();

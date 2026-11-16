@@ -10,6 +10,10 @@ class NomorDokumen extends Model
 
     public const JENIS_PO = 'po';
 
+    public const JENIS_WORK_ORDER = 'work_order';
+
+    public const JENIS_SURAT_JALAN = 'surat_jalan';
+
     public $timestamps = false;
 
     protected $table = 'nomor_dokumen';

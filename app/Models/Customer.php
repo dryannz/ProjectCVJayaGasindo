@@ -24,6 +24,7 @@ class Customer extends Model
         'idcust',
         'notelp_pt',
         'nama_pt',
+        'kode_singkat',
         'alamat_pt',
         'pic',
     ];
@@ -41,5 +42,10 @@ class Customer extends Model
     public function po(): HasMany
     {
         return $this->hasMany(Po::class, 'idcust', 'idcust');
+    }
+
+    public function workOrders(): HasMany
+    {
+        return $this->hasMany(WorkOrder::class, 'idcust', 'idcust');
     }
 }

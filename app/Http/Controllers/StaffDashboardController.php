@@ -40,11 +40,6 @@ class StaffDashboardController extends Controller
         ]);
     }
 
-    public function workOrder(): View
-    {
-        return $this->render('Work Order Teknisi', 'melihat Work Order');
-    }
-
     public function pimpinan(): View
     {
         return $this->render('Dashboard Pimpinan', 'laporan penjualan dan stok');

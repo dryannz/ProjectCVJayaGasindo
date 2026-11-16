@@ -25,6 +25,7 @@ class CustomerController extends Controller
                 $query->where(function ($query) use ($search): void {
                     $query->where('idcust', 'like', "%{$search}%")
                         ->orWhere('nama_pt', 'like', "%{$search}%")
+                        ->orWhere('kode_singkat', 'like', "%{$search}%")
                         ->orWhere('pic', 'like', "%{$search}%");
                 });
             })

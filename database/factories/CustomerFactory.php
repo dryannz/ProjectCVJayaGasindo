@@ -21,8 +21,16 @@ class CustomerFactory extends Factory
             'idcust' => 'CUST-'.fake()->unique()->numerify('####'),
             'notelp_pt' => fake()->numerify('08##########'),
             'nama_pt' => fake()->company(),
+            'kode_singkat' => null,
             'alamat_pt' => fake()->address(),
             'pic' => fake()->name(),
         ];
+    }
+
+    public function withKodeSingkat(string $kodeSingkat = 'PPKS'): static
+    {
+        return $this->state(fn (): array => [
+            'kode_singkat' => strtoupper($kodeSingkat),
+        ]);
     }
 }
