@@ -25,6 +25,16 @@
             </div>
         @endif
 
+        @if ($quotation->status === \App\Models\Quotation::STATUS_DISETUJUI)
+            <div class="flex flex-wrap items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
+                @if ($quotation->po)
+                    <p class="text-sm font-semibold text-emerald-900">PO sudah dibuat: <a href="{{ route('admin.po.show', $quotation->po) }}" class="font-black underline decoration-emerald-400 decoration-2 underline-offset-4">{{ $quotation->po->pono }}</a></p>
+                @else
+                    <p class="text-sm font-semibold text-emerald-900">Quotation disetujui dan siap dijadikan PO.</p>
+                    <a href="{{ route('admin.po.create', ['quotation_id' => $quotation->id]) }}" class="ml-auto inline-flex min-h-11 items-center rounded-lg bg-red-600 px-5 text-sm font-bold text-white hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">Buat PO dari quotation</a>
+                @endif
+            </div>
+        @endif
         @if ($quotation->status === \App\Models\Quotation::STATUS_TERKIRIM)
             <div class="flex flex-wrap items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
                 <p class="text-sm font-semibold text-slate-700">Tindak lanjut keputusan customer:</p>

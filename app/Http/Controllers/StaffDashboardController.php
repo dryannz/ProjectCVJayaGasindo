@@ -6,6 +6,7 @@ use App\Models\BarangJasa;
 use App\Models\Kategori;
 use App\Models\Lead;
 use App\Models\Petugas;
+use App\Models\Po;
 use App\Models\Quotation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -27,6 +28,10 @@ class StaffDashboardController extends Controller
                 ->count(),
             'leadBaruCount' => Lead::query()->baru()->count(),
             'leadTotalCount' => Lead::query()->count(),
+            'poStatusCounts' => Po::query()
+                ->selectRaw('status, count(*) as total')
+                ->groupBy('status')
+                ->pluck('total', 'status'),
             'quotationStatusCounts' => Quotation::query()
                 ->selectRaw('status, count(*) as total')
                 ->groupBy('status')

@@ -74,6 +74,15 @@
                 </div>
                 <p class="mt-4 text-sm leading-7 text-slate-600">PO, Surat Jalan, dan Invoice: belum tersedia.</p>
                 <a href="{{ route('admin.quotation.index') }}" class="mt-5 inline-flex min-h-11 items-center rounded-lg font-bold text-red-700 underline decoration-red-300 decoration-2 underline-offset-4 hover:text-red-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0b1f3a]">Kelola quotation</a>
+                <div class="mt-6 border-t border-slate-200 pt-5">
+                    <p class="text-sm font-bold text-[#0b1f3a]">Purchase Order</p>
+                    <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                        @foreach (\App\Models\Po::STATUSES as $kode => $label)
+                            <a href="{{ route('admin.po.index', ['status' => $kode]) }}" class="rounded-xl border border-slate-200 bg-slate-50 p-3 transition hover:border-[#0b1f3a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0b1f3a]"><p class="text-xs font-semibold text-slate-500">{{ $label }}</p><p class="mt-1 text-xl font-black text-[#0b1f3a]">{{ number_format($poStatusCounts[$kode] ?? 0) }}</p></a>
+                        @endforeach
+                    </div>
+                    <a href="{{ route('admin.po.index') }}" class="mt-4 inline-flex min-h-11 items-center font-bold text-red-700 underline decoration-red-300 decoration-2 underline-offset-4 hover:text-red-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0b1f3a]">Kelola PO</a>
+                </div>
             </div>
         </section>
     </div>

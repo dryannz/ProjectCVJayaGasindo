@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\BarangJasa;
 use App\Models\Kategori;
 use App\Models\Petugas;
+use App\Models\Po;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -220,19 +221,29 @@ class AdminCatalogTest extends TestCase
     {
         $petugas = Petugas::factory()->create(['role' => 'admin_sales']);
         $produk = BarangJasa::factory()->create();
+        $po = Po::factory()->create();
 
-        Schema::create('detail_po', function (Blueprint $table): void {
-            $table->string('idbarangjasa', 20);
-            $table->string('nopo', 20);
-            $table->string('qty', 10);
-            $table->decimal('amount', 10, 0);
-        });
+        if (! Schema::hasTable('detail_po')) {
+            Schema::create('detail_po', function (Blueprint $table): void {
+                $table->id();
+                $table->string('idbarangjasa', 20);
+                $table->string('pono', 20);
+                $table->unsignedInteger('qty');
+                $table->decimal('amount', 15, 0);
+                $table->string('nama_barang')->nullable();
+                $table->string('unit')->nullable();
+                $table->decimal('harga_satuan', 15, 0)->default(0);
+            });
+        }
 
         DB::table('detail_po')->insert([
             'idbarangjasa' => $produk->idbarangjasa,
-            'nopo' => 'PO-0001',
-            'qty' => '1',
+            'pono' => $po->pono,
+            'qty' => 1,
             'amount' => 100000,
+            'nama_barang' => $produk->nama_barang,
+            'unit' => $produk->unit,
+            'harga_satuan' => 100000,
         ]);
 
         $this->actingAs($petugas)
@@ -241,12 +252,5 @@ class AdminCatalogTest extends TestCase
             ->assertSessionHasErrors('produk');
 
         $this->assertDatabaseHas('barang_jasa', ['idbarangjasa' => $produk->idbarangjasa]);
-    }
-
-    protected function tearDown(): void
-    {
-        Schema::dropIfExists('detail_po');
-
-        parent::tearDown();
     }
 }

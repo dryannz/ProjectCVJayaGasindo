@@ -4,7 +4,9 @@ use App\Http\Controllers\Admin\BarangJasaController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\LeadController;
+use App\Http\Controllers\Admin\PoController;
 use App\Http\Controllers\Admin\QuotationController;
+use App\Http\Controllers\Admin\StokController;
 use App\Http\Controllers\KatalogController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PageController;
@@ -79,6 +81,17 @@ Route::middleware(['auth', 'role:admin_sales'])->prefix('admin')->name('admin.')
     Route::get('/quotation/{quotation}/edit', [QuotationController::class, 'edit'])->name('quotation.edit');
     Route::put('/quotation/{quotation}', [QuotationController::class, 'update'])->name('quotation.update');
     Route::patch('/quotation/{quotation}/status', [QuotationController::class, 'updateStatus'])->name('quotation.status');
+
+    Route::get('/po', [PoController::class, 'index'])->name('po.index');
+    Route::get('/po/create', [PoController::class, 'create'])->name('po.create');
+    Route::post('/po', [PoController::class, 'store'])->name('po.store');
+    Route::get('/po/{po}/edit', [PoController::class, 'edit'])->name('po.edit')->where('po', '.*');
+    Route::patch('/po/{po}/status', [PoController::class, 'updateStatus'])->name('po.status')->where('po', '.*');
+    Route::put('/po/{po}', [PoController::class, 'update'])->name('po.update')->where('po', '.*');
+    Route::get('/po/{po}', [PoController::class, 'show'])->name('po.show')->where('po', '.*');
+
+    Route::get('/stok', [StokController::class, 'index'])->name('stok.index');
+    Route::post('/stok/penyesuaian', [StokController::class, 'adjust'])->name('stok.adjust');
 });
 
 Route::controller(StaffDashboardController::class)->middleware('auth')->group(function (): void {

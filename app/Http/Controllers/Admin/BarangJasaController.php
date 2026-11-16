@@ -7,10 +7,12 @@ use App\Http\Requests\StoreBarangJasaRequest;
 use App\Http\Requests\UpdateBarangJasaRequest;
 use App\Models\BarangJasa;
 use App\Models\Kategori;
+use App\Support\StockService;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
@@ -53,14 +55,30 @@ class BarangJasaController extends Controller
         ]);
     }
 
-    public function store(StoreBarangJasaRequest $request): RedirectResponse
+    public function store(StoreBarangJasaRequest $request, StockService $stockService): RedirectResponse
     {
         $data = $request->validated();
         $data['is_active'] = $data['is_active'] ?? true;
+        $initialStock = $data['tipe'] === 'fisik' ? (int) ($data['stok'] ?? 0) : null;
         $storedImage = $this->storeImage($data);
 
+        if ($data['tipe'] === 'fisik') {
+            $data['stok'] = 0;
+        }
+
         try {
-            $this->createWithGeneratedId($data);
+            DB::transaction(function () use ($data, $initialStock, $stockService): void {
+                $product = $this->createWithGeneratedId($data);
+
+                if ($initialStock !== null && $initialStock > 0) {
+                    $stockService->koreksi(
+                        $product,
+                        $initialStock,
+                        'Stok awal dari form produk',
+                        Auth::user()?->idpetugas,
+                    );
+                }
+            });
         } catch (Throwable $exception) {
             if ($storedImage !== null) {
                 Storage::disk('public')->delete($storedImage);
@@ -80,12 +98,13 @@ class BarangJasaController extends Controller
         ]);
     }
 
-    public function update(UpdateBarangJasaRequest $request, BarangJasa $barangJasa): RedirectResponse
+    public function update(UpdateBarangJasaRequest $request, BarangJasa $barangJasa, StockService $stockService): RedirectResponse
     {
         $data = $request->validated();
         $oldImage = $barangJasa->gambar;
         $storedImage = null;
         $shouldDeleteOldImage = false;
+        $targetStock = $data['tipe'] === 'fisik' ? (int) ($data['stok'] ?? 0) : null;
 
         if (($data['gambar'] ?? null) instanceof UploadedFile) {
             $storedImage = $this->storeImage($data);
@@ -95,11 +114,20 @@ class BarangJasaController extends Controller
             $shouldDeleteOldImage = true;
         }
 
-        unset($data['hapus_gambar']);
+        unset($data['hapus_gambar'], $data['stok']);
 
         try {
-            DB::transaction(function () use ($barangJasa, $data): void {
+            DB::transaction(function () use ($barangJasa, $data, $targetStock, $stockService): void {
                 $barangJasa->update($data);
+
+                if ($targetStock !== null) {
+                    $stockService->koreksi(
+                        $barangJasa,
+                        $targetStock,
+                        'Koreksi stok dari form produk',
+                        Auth::user()?->idpetugas,
+                    );
+                }
             });
         } catch (Throwable $exception) {
             if ($storedImage !== null) {

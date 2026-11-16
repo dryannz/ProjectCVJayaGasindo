@@ -12,5 +12,8 @@ return [
         'quotation' => [
             'format' => env('DOKUMEN_FORMAT_QUOTATION', 'QT/{tahun}/{bulan}/{urut4}'),
         ],
+        'po' => [
+            'format' => env('DOKUMEN_FORMAT_PO', 'PO/{tahun}/{bulan}/{urut4}'),
+        ],
     ],
 ];

@@ -137,7 +137,7 @@ class QuotationController extends Controller
 
     public function show(Quotation $quotation): View
     {
-        $quotation->load(['customer', 'petugas', 'details', 'lead']);
+        $quotation->load(['customer', 'petugas', 'details', 'lead', 'po']);
 
         return view('admin.quotation.show', ['quotation' => $quotation]);
     }

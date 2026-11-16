@@ -56,6 +56,16 @@ class BarangJasa extends Model
         return $this->hasMany(HargaKhusus::class, 'idbarangjasa', 'idbarangjasa');
     }
 
+    public function detailPo(): HasMany
+    {
+        return $this->hasMany(DetailPo::class, 'idbarangjasa', 'idbarangjasa');
+    }
+
+    public function stokMutasi(): HasMany
+    {
+        return $this->hasMany(StokMutasi::class, 'idbarangjasa', 'idbarangjasa');
+    }
+
     public function scopeAktif(Builder $query): void
     {
         $query->where('is_active', true);

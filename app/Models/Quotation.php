@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Quotation extends Model
 {
@@ -125,5 +126,10 @@ class Quotation extends Model
             self::STATUS_DISETUJUI, self::STATUS_DITOLAK => $dari === self::STATUS_TERKIRIM,
             default => false,
         };
+    }
+
+    public function po(): HasOne
+    {
+        return $this->hasOne(Po::class, 'quotation_id');
     }
 }

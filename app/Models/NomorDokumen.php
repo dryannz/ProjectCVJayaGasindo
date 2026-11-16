@@ -8,6 +8,8 @@ class NomorDokumen extends Model
 {
     public const JENIS_QUOTATION = 'quotation';
 
+    public const JENIS_PO = 'po';
+
     public $timestamps = false;
 
     protected $table = 'nomor_dokumen';

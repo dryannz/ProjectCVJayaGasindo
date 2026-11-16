@@ -37,4 +37,9 @@ class Customer extends Model
     {
         return $this->hasMany(Quotation::class, 'idcust', 'idcust');
     }
+
+    public function po(): HasMany
+    {
+        return $this->hasMany(Po::class, 'idcust', 'idcust');
+    }
 }
