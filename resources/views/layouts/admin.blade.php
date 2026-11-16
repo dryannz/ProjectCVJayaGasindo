@@ -3,6 +3,8 @@
     $navItems = [
         ['label' => 'Dashboard', 'route' => 'admin.dashboard', 'match' => 'admin.dashboard'],
         ['label' => 'Lead Log', 'route' => 'admin.leads.index', 'match' => 'admin.leads.*', 'badge' => $leadBaruCount ?? 0],
+        ['label' => 'Customer', 'route' => 'admin.customer.index', 'match' => 'admin.customer.*'],
+        ['label' => 'Quotation', 'route' => 'admin.quotation.index', 'match' => 'admin.quotation.*'],
         ['label' => 'Kategori', 'route' => 'admin.kategori.index', 'match' => 'admin.kategori.*'],
         ['label' => 'Produk', 'route' => 'admin.produk.index', 'match' => 'admin.produk.*'],
     ];

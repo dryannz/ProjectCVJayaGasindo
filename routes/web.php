@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\BarangJasaController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\LeadController;
+use App\Http\Controllers\Admin\QuotationController;
 use App\Http\Controllers\KatalogController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PageController;
@@ -62,6 +64,21 @@ Route::middleware(['auth', 'role:admin_sales'])->prefix('admin')->name('admin.')
     Route::put('/produk/{barangJasa:idbarangjasa}', [BarangJasaController::class, 'update'])->name('produk.update');
     Route::patch('/produk/{barangJasa:idbarangjasa}/status', [BarangJasaController::class, 'toggleStatus'])->name('produk.status');
     Route::delete('/produk/{barangJasa:idbarangjasa}', [BarangJasaController::class, 'destroy'])->name('produk.destroy');
+
+    Route::get('/customer', [CustomerController::class, 'index'])->name('customer.index');
+    Route::get('/customer/create', [CustomerController::class, 'create'])->name('customer.create');
+    Route::post('/customer', [CustomerController::class, 'store'])->name('customer.store');
+    Route::get('/customer/{customer}/edit', [CustomerController::class, 'edit'])->name('customer.edit');
+    Route::put('/customer/{customer}', [CustomerController::class, 'update'])->name('customer.update');
+    Route::delete('/customer/{customer}', [CustomerController::class, 'destroy'])->name('customer.destroy');
+
+    Route::get('/quotation', [QuotationController::class, 'index'])->name('quotation.index');
+    Route::get('/quotation/create', [QuotationController::class, 'create'])->name('quotation.create');
+    Route::post('/quotation', [QuotationController::class, 'store'])->name('quotation.store');
+    Route::get('/quotation/{quotation}', [QuotationController::class, 'show'])->name('quotation.show');
+    Route::get('/quotation/{quotation}/edit', [QuotationController::class, 'edit'])->name('quotation.edit');
+    Route::put('/quotation/{quotation}', [QuotationController::class, 'update'])->name('quotation.update');
+    Route::patch('/quotation/{quotation}/status', [QuotationController::class, 'updateStatus'])->name('quotation.status');
 });
 
 Route::controller(StaffDashboardController::class)->middleware('auth')->group(function (): void {

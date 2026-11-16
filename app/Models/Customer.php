@@ -32,4 +32,9 @@ class Customer extends Model
     {
         return $this->hasMany(HargaKhusus::class, 'idcust', 'idcust');
     }
+
+    public function quotations(): HasMany
+    {
+        return $this->hasMany(Quotation::class, 'idcust', 'idcust');
+    }
 }

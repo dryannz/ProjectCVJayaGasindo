@@ -57,8 +57,23 @@
                 <p class="text-sm font-bold uppercase tracking-[0.15em] text-red-600">Permintaan penawaran</p>
                 <h2 class="mt-2 text-2xl font-black text-[#0b1f3a]">Lead Log</h2>
                 <p class="mt-3 text-4xl font-black text-[#0b1f3a]">{{ number_format($leadBaruCount) }} <span class="text-base font-bold text-slate-500">baru dari {{ number_format($leadTotalCount) }} lead</span></p>
-                <p class="mt-3 text-sm leading-7 text-slate-600">Quotation belum tersedia. Lead yang masuk dari keranjang RFQ publik dapat ditindaklanjuti dari sini.</p>
+                <p class="mt-3 text-sm leading-7 text-slate-600">Lead yang masuk dari keranjang RFQ publik dapat ditindaklanjuti dari sini.</p>
                 <a href="{{ route('admin.leads.index', ['status' => 'baru']) }}" class="mt-5 inline-flex min-h-11 items-center rounded-lg font-bold text-red-700 underline decoration-red-300 decoration-2 underline-offset-4 hover:text-red-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0b1f3a]">Lihat lead baru</a>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7 lg:col-span-2">
+                <p class="text-sm font-bold uppercase tracking-[0.15em] text-red-600">Transaksi</p>
+                <h2 class="mt-2 text-2xl font-black text-[#0b1f3a]">Quotation</h2>
+                <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-5">
+                    @foreach (\App\Models\Quotation::STATUSES as $kode => $label)
+                        <a href="{{ route('admin.quotation.index', ['status' => $kode]) }}" class="rounded-xl border border-slate-200 bg-white p-4 transition hover:border-[#0b1f3a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0b1f3a]">
+                            <p class="text-xs font-semibold text-slate-500">{{ $label }}</p>
+                            <p class="mt-1 text-2xl font-black text-[#0b1f3a]">{{ number_format($quotationStatusCounts[$kode] ?? 0) }}</p>
+                        </a>
+                    @endforeach
+                </div>
+                <p class="mt-4 text-sm leading-7 text-slate-600">PO, Surat Jalan, dan Invoice: belum tersedia.</p>
+                <a href="{{ route('admin.quotation.index') }}" class="mt-5 inline-flex min-h-11 items-center rounded-lg font-bold text-red-700 underline decoration-red-300 decoration-2 underline-offset-4 hover:text-red-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0b1f3a]">Kelola quotation</a>
             </div>
         </section>
     </div>

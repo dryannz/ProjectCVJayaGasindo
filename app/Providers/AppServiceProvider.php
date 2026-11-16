@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Lead;
 use App\Support\RfqCart;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -29,5 +30,9 @@ class AppServiceProvider extends ServiceProvider
         View::composer('layouts.admin', function ($view): void {
             $view->with('leadBaruCount', Lead::query()->baru()->count());
         });
+
+        if (str_contains(request()->getHost(), 'devtunnels.ms')) {
+            URL::forceScheme('https');
+        }
     }
 }

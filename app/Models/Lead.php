@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Support\WhatsApp;
 use Database\Factories\LeadFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Support\WhatsApp;
 
 class Lead extends Model
 {
@@ -62,6 +62,11 @@ class Lead extends Model
     public function penanganan(): BelongsTo
     {
         return $this->belongsTo(Petugas::class, 'ditangani_oleh', 'idpetugas');
+    }
+
+    public function quotations(): HasMany
+    {
+        return $this->hasMany(Quotation::class);
     }
 
     public function scopeBaru(Builder $query): void
