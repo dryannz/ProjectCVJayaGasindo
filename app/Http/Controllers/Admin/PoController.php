@@ -73,7 +73,15 @@ class PoController extends Controller
 
     public function show(Po $po): View
     {
-        $po->load(['customer', 'quotation', 'petugas', 'details.barangJasa', 'stockMutations.petugas', 'workOrders.petugas']);
+        $po->load([
+            'customer',
+            'quotation',
+            'petugas',
+            'details.barangJasa',
+            'stockMutations.petugas',
+            'suratJalans.petugas',
+            'workOrders.petugas',
+        ]);
 
         return view('admin.po.show', [
             'po' => $po,

@@ -48,4 +48,9 @@ class DetailPo extends Model
     {
         return $this->hasMany(DetailWorkOrder::class, 'detail_po_id');
     }
+
+    public function suratJalanDetails(): HasMany
+    {
+        return $this->hasMany(DetailSuratJalan::class, 'detail_po_id');
+    }
 }

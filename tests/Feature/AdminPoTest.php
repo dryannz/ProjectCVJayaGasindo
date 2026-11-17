@@ -125,7 +125,7 @@ class AdminPoTest extends TestCase
         $this->assertSame(352000, (int) $pos[0]->total);
     }
 
-    public function test_processing_consumes_physical_stock_but_not_service_stock(): void
+    public function test_processing_does_not_consume_stock_for_physical_or_service_items(): void
     {
         $physical = BarangJasa::factory()->create(['stok' => 10]);
         $service = BarangJasa::factory()->jasa()->create(['nama_barang' => 'Instalasi pipa']);
@@ -141,13 +141,12 @@ class AdminPoTest extends TestCase
             ->patch(route('admin.po.status', $po), ['status' => Po::STATUS_DIPROSES])
             ->assertRedirect(route('admin.po.show', $po));
 
-        $this->assertSame(7, (int) $physical->fresh()->stok);
+        $this->assertSame(10, (int) $physical->fresh()->stok);
         $this->assertNull($service->fresh()->stok);
-        $this->assertSame(1, StokMutasi::query()->where('referensi_id', $po->pono)->count());
-        $this->assertSame('keluar', StokMutasi::query()->where('referensi_id', $po->pono)->sole()->jenis);
+        $this->assertDatabaseCount('stok_mutasi', 0);
     }
 
-    public function test_insufficient_stock_rolls_back_every_item(): void
+    public function test_processing_does_not_reject_insufficient_stock(): void
     {
         $available = BarangJasa::factory()->create(['stok' => 10]);
         $short = BarangJasa::factory()->create(['stok' => 1, 'nama_barang' => 'Stok Terbatas']);
@@ -163,11 +162,11 @@ class AdminPoTest extends TestCase
             ->from(route('admin.po.show', $po))
             ->patch(route('admin.po.status', $po), ['status' => Po::STATUS_DIPROSES])
             ->assertRedirect(route('admin.po.show', $po))
-            ->assertSessionHasErrors('status');
+            ->assertSessionHasNoErrors();
 
         $this->assertSame(10, (int) $available->fresh()->stok);
         $this->assertSame(1, (int) $short->fresh()->stok);
-        $this->assertSame(Po::STATUS_DRAFT, $po->fresh()->status);
+        $this->assertSame(Po::STATUS_DIPROSES, $po->fresh()->status);
         $this->assertDatabaseCount('stok_mutasi', 0);
     }
 
@@ -191,7 +190,7 @@ class AdminPoTest extends TestCase
             ->assertSessionHasErrors('status');
     }
 
-    public function test_cancel_returns_stock_once_and_draft_cancel_does_not_change_stock(): void
+    public function test_cancel_does_not_change_stock_after_processing_or_from_draft(): void
     {
         $processedProduct = BarangJasa::factory()->create(['stok' => 5]);
         $processedQuotation = $this->quotationWithProducts([
@@ -200,11 +199,11 @@ class AdminPoTest extends TestCase
         $this->actingAs($this->admin)->post(route('admin.po.store'), $this->poPayload($processedQuotation))->assertRedirect();
         $processedPo = Po::query()->sole();
         $this->actingAs($this->admin)->patch(route('admin.po.status', $processedPo), ['status' => Po::STATUS_DIPROSES])->assertRedirect();
-        $this->assertSame(3, (int) $processedProduct->fresh()->stok);
+        $this->assertSame(5, (int) $processedProduct->fresh()->stok);
 
         $this->actingAs($this->admin)->patch(route('admin.po.status', $processedPo), ['status' => Po::STATUS_BATAL])->assertRedirect();
         $this->assertSame(5, (int) $processedProduct->fresh()->stok);
-        $this->assertSame(2, StokMutasi::query()->where('referensi_id', $processedPo->pono)->count());
+        $this->assertSame(0, StokMutasi::query()->where('referensi_id', $processedPo->pono)->count());
 
         $this->actingAs($this->admin)
             ->from(route('admin.po.show', $processedPo))

@@ -92,6 +92,40 @@ class StockService
         });
     }
 
+    /**
+     * @param  array<string, int>  $requirements
+     * @return array<int, array{idbarangjasa: string, nama_barang: string, diminta: int, tersedia: int}>
+     */
+    public function findShortages(array $requirements): array
+    {
+        if ($requirements === []) {
+            return [];
+        }
+
+        $products = BarangJasa::query()
+            ->whereIn('idbarangjasa', array_keys($requirements))
+            ->lockForUpdate()
+            ->get()
+            ->keyBy('idbarangjasa');
+        $shortages = [];
+
+        foreach ($requirements as $idbarangjasa => $qty) {
+            $product = $products->get($idbarangjasa);
+            $available = (int) ($product?->stok ?? 0);
+
+            if ($product === null || $available < $qty) {
+                $shortages[] = [
+                    'idbarangjasa' => $idbarangjasa,
+                    'nama_barang' => $product?->nama_barang ?? $idbarangjasa,
+                    'diminta' => $qty,
+                    'tersedia' => $available,
+                ];
+            }
+        }
+
+        return $shortages;
+    }
+
     public function koreksi(
         BarangJasa|string $produk,
         int $stokBaru,

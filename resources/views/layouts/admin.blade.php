@@ -6,6 +6,7 @@
         ['label' => 'Customer', 'route' => 'admin.customer.index', 'match' => 'admin.customer.*'],
         ['label' => 'Quotation', 'route' => 'admin.quotation.index', 'match' => 'admin.quotation.*'],
         ['label' => 'PO', 'route' => 'admin.po.index', 'match' => 'admin.po.*'],
+        ['label' => 'Surat Jalan', 'route' => 'admin.surat-jalan.index', 'match' => 'admin.surat-jalan.*'],
         ['label' => 'Work Order', 'route' => 'admin.work-order.index', 'match' => 'admin.work-order.*'],
         ['label' => 'Stok', 'route' => 'admin.stok.index', 'match' => 'admin.stok.*'],
         ['label' => 'Kategori', 'route' => 'admin.kategori.index', 'match' => 'admin.kategori.*'],

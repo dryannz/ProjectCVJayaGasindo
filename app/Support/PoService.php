@@ -2,20 +2,14 @@
 
 namespace App\Support;
 
-use App\Exceptions\InsufficientStockException;
-use App\Models\BarangJasa;
-use App\Models\DetailPo;
 use App\Models\NomorDokumen;
 use App\Models\Po;
 use App\Models\Quotation;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class PoService
 {
-    public function __construct(private readonly StockService $stockService) {}
-
     /** @param array<string, mixed> $data */
     public function createFromQuotation(Quotation $quotation, array $data, string $idpetugas): Po
     {
@@ -108,12 +102,10 @@ class PoService
                 ]);
             }
 
-            if ($status === Po::STATUS_DIPROSES) {
-                $this->consumeStockForPo($lockedPo, $idpetugas);
-            }
-
-            if ($status === Po::STATUS_BATAL && $lockedPo->status === Po::STATUS_DIPROSES) {
-                $this->restoreStockForPo($lockedPo, $idpetugas);
+            if ($status === Po::STATUS_BATAL && $lockedPo->hasActiveSuratJalan()) {
+                throw ValidationException::withMessages([
+                    'status' => 'PO tidak dapat dibatalkan selama masih memiliki Surat Jalan aktif. Batalkan Surat Jalan terlebih dahulu.',
+                ]);
             }
 
             $lockedPo->update([
@@ -215,103 +207,5 @@ class PoService
                 'amount' => $item['qty'] * $item['harga_satuan'],
             ]);
         }
-    }
-
-    private function consumeStockForPo(Po $po, string $idpetugas): void
-    {
-        $requirements = $this->stockRequirements($po->details);
-        $shortages = $this->findShortages($requirements);
-
-        if ($shortages !== []) {
-            throw InsufficientStockException::forShortages($shortages);
-        }
-
-        foreach ($requirements as $idbarangjasa => $qty) {
-            $this->stockService->keluar(
-                $idbarangjasa,
-                $qty,
-                'po',
-                $po->pono,
-                "PO {$po->pono} diproses",
-                $idpetugas,
-            );
-        }
-    }
-
-    private function restoreStockForPo(Po $po, string $idpetugas): void
-    {
-        if (! $po->isStockConsumed()) {
-            return;
-        }
-
-        foreach ($this->stockRequirements($po->details) as $idbarangjasa => $qty) {
-            $this->stockService->masuk(
-                $idbarangjasa,
-                $qty,
-                'po',
-                $po->pono,
-                "Pembatalan PO {$po->pono}",
-                $idpetugas,
-            );
-        }
-    }
-
-    /** @param Collection<int, DetailPo> $details @return array<string, int> */
-    private function stockRequirements(Collection $details): array
-    {
-        $requirements = [];
-
-        foreach ($details as $detail) {
-            if ($detail->idbarangjasa === null) {
-                if ($detail->qty > 0 && $detail->getAttribute('tipe') === 'fisik') {
-                    throw ValidationException::withMessages([
-                        'status' => "Item {$detail->nama_barang} belum terhubung ke produk fisik.",
-                    ]);
-                }
-
-                continue;
-            }
-
-            $product = BarangJasa::query()->whereKey($detail->idbarangjasa)->first();
-
-            if ($product?->tipe !== 'fisik') {
-                continue;
-            }
-
-            $requirements[$detail->idbarangjasa] = ($requirements[$detail->idbarangjasa] ?? 0) + $detail->qty;
-        }
-
-        return $requirements;
-    }
-
-    /** @param array<string, int> $requirements @return array<int, array{idbarangjasa: string, nama_barang: string, diminta: int, tersedia: int}> */
-    private function findShortages(array $requirements): array
-    {
-        if ($requirements === []) {
-            return [];
-        }
-
-        $products = BarangJasa::query()
-            ->whereIn('idbarangjasa', array_keys($requirements))
-            ->lockForUpdate()
-            ->get()
-            ->keyBy('idbarangjasa');
-        $shortages = [];
-
-        foreach ($requirements as $idbarangjasa => $qty) {
-            $product = $products->get($idbarangjasa);
-            $available = (int) ($product?->stok ?? 0);
-
-            if ($product === null || $available < $qty) {
-                $shortages[] = [
-                    'idbarangjasa' => $idbarangjasa,
-                    'nama_barang' => $product?->nama_barang ?? $idbarangjasa,
-                    'diminta' => $qty,
-                    'tersedia' => $available,
-                ];
-            }
-        }
-
-        return $shortages;
     }
 }

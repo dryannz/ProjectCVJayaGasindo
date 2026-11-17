@@ -98,6 +98,29 @@ class Po extends Model
         return $this->hasMany(WorkOrder::class, 'pono', 'pono');
     }
 
+    public function suratJalans(): HasMany
+    {
+        return $this->hasMany(SuratJalan::class, 'pono', 'pono');
+    }
+
+    public function activeSuratJalans(): HasMany
+    {
+        return $this->suratJalans()->whereIn('status', [
+            SuratJalan::STATUS_DITERBITKAN,
+            SuratJalan::STATUS_DITERIMA,
+        ]);
+    }
+
+    public function hasActiveSuratJalan(): bool
+    {
+        return $this->activeSuratJalans()->exists();
+    }
+
+    public function canCreateSuratJalan(): bool
+    {
+        return $this->status === self::STATUS_DIPROSES;
+    }
+
     public function canCreateWorkOrder(): bool
     {
         return in_array($this->status, [self::STATUS_DIPROSES, self::STATUS_SELESAI], true);

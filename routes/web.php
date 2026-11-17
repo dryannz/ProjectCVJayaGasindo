@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\LeadController;
 use App\Http\Controllers\Admin\PoController;
 use App\Http\Controllers\Admin\QuotationController;
 use App\Http\Controllers\Admin\StokController;
+use App\Http\Controllers\Admin\SuratJalanController;
 use App\Http\Controllers\Admin\WorkOrderController;
 use App\Http\Controllers\KatalogController;
 use App\Http\Controllers\LoginController;
@@ -91,6 +92,15 @@ Route::middleware(['auth', 'role:admin_sales'])->prefix('admin')->name('admin.')
     Route::patch('/po/{po}/status', [PoController::class, 'updateStatus'])->name('po.status')->where('po', '.*');
     Route::put('/po/{po}', [PoController::class, 'update'])->name('po.update')->where('po', '.*');
     Route::get('/po/{po}', [PoController::class, 'show'])->name('po.show')->where('po', '.*');
+
+    Route::get('/surat-jalan', [SuratJalanController::class, 'index'])->name('surat-jalan.index');
+    Route::get('/surat-jalan/create/{po}', [SuratJalanController::class, 'create'])->name('surat-jalan.create')->where('po', '.*');
+    Route::post('/surat-jalan/{po}', [SuratJalanController::class, 'store'])->name('surat-jalan.store')->where('po', '.*');
+    Route::patch('/surat-jalan/{suratJalan}/terbitkan', [SuratJalanController::class, 'publish'])->name('surat-jalan.publish')->where('suratJalan', '.*');
+    Route::patch('/surat-jalan/{suratJalan}/terima', [SuratJalanController::class, 'receive'])->name('surat-jalan.receive')->where('suratJalan', '.*');
+    Route::patch('/surat-jalan/{suratJalan}/batal', [SuratJalanController::class, 'cancel'])->name('surat-jalan.cancel')->where('suratJalan', '.*');
+    Route::patch('/surat-jalan/{suratJalan}/catatan', [SuratJalanController::class, 'updateNotes'])->name('surat-jalan.notes')->where('suratJalan', '.*');
+    Route::get('/surat-jalan/{suratJalan}', [SuratJalanController::class, 'show'])->name('surat-jalan.show')->where('suratJalan', '.*');
 
     Route::get('/work-order', [WorkOrderController::class, 'index'])->name('work-order.index');
     Route::get('/work-order/create/{po}', [WorkOrderController::class, 'create'])->name('work-order.create')->where('po', '.*');
