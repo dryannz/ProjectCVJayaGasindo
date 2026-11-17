@@ -19,6 +19,7 @@
                 <a href="{{ route('admin.quotation.edit', $quotation) }}" class="ml-auto inline-flex min-h-11 items-center rounded-lg bg-[#0b1f3a] px-5 text-sm font-bold text-white hover:bg-[#132c4d] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0b1f3a]">Edit quotation</a>
                 <form method="POST" action="{{ route('admin.quotation.status', $quotation) }}">
                     @csrf
+                    @method('PATCH')
                     <input type="hidden" name="status" value="terkirim">
                     <button type="submit" class="inline-flex min-h-11 items-center rounded-lg bg-red-600 px-5 text-sm font-bold text-white hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">Kirim ke customer</button>
                 </form>
@@ -40,11 +41,13 @@
                 <p class="text-sm font-semibold text-slate-700">Tindak lanjut keputusan customer:</p>
                 <form method="POST" action="{{ route('admin.quotation.status', $quotation) }}" class="ml-auto">
                     @csrf
+                    @method('PATCH')
                     <input type="hidden" name="status" value="disetujui">
                     <button type="submit" class="inline-flex min-h-11 items-center rounded-lg bg-emerald-600 px-5 text-sm font-bold text-white hover:bg-emerald-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600">Disetujui</button>
                 </form>
                 <form method="POST" action="{{ route('admin.quotation.status', $quotation) }}">
                     @csrf
+                    @method('PATCH')
                     <input type="hidden" name="status" value="ditolak">
                     <button type="submit" class="inline-flex min-h-11 items-center rounded-lg border border-red-200 bg-white px-5 text-sm font-bold text-red-700 hover:bg-red-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">Ditolak</button>
                 </form>
